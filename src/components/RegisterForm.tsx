@@ -1,4 +1,4 @@
-import { ArrowLeft, EyeIcon, EyeOff, Key, Leaf, Lock, LogIn, Mail, User, Vault } from 'lucide-react'
+import { ArrowLeft, EyeIcon, EyeOff, Leaf, Loader2, Lock, LogIn, Mail, User, Vault } from 'lucide-react'
 import { motion } from 'motion/react'
 import Image from 'next/image'
 import googleImage from '@/assets/google-logo-icon-gsuite-hd-701751694791470gzbayltphh.png'
@@ -13,17 +13,23 @@ const RegisterForm = ({previousStep}:propType) => {
     const [email,setEmail]=useState("");
     const [password,setPassword]=useState("");
     const [showPassword,setshowPassword]=useState(false);
-    
-    const handleRegister=async ()=>{
+    const [loading,setLoding]=useState(false);
+    const handleRegister=async (e:React.FormEvent)=>{
+        e.preventDefault()
         try{
             const result=await axios.post("/api/auth/register",{
                 name,email,password
             })
             console.log(result.data)
-
+            setLoding(false);
         }
         catch(error){
+            console.log("error in handleregister")
             console.log(error);
+               console.log((error as any).response?.data)
+    console.log((error as any).response?.status)
+    console.log((error as any).message)
+    setLoding(false);
         }
     }
   return (
@@ -54,6 +60,7 @@ const RegisterForm = ({previousStep}:propType) => {
                 <Leaf className='w-5 h-5 text-green-700'/></p>
 
             <motion.form 
+            onSubmit={handleRegister}
                initial={{
                 opacity:0
             }}
@@ -110,10 +117,13 @@ const RegisterForm = ({previousStep}:propType) => {
                       {
                       (()=>{
                         const formValidation = name !== "" && email !== "" && password !==""
-                        return <button className={`w-full font-semibold py-3 rounded-xl transition-all duration-200 shadow-md inline-flex items-center justify-center gap-2 ${
+                        return <button disabled={!formValidation || loading} className={`w-full font-semibold py-3 rounded-xl transition-all duration-200 
+                            shadow-md inline-flex items-center justify-center gap-2 ${
                             formValidation
                             ?"bg-green-600 hover:bg-green-700 text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        }`}>Register
+                        }`}>
+                      {loading?<Loader2 className='w-5 h-5 animate-spin'/>:"Register"}      
+                        
                         </button>
 
                       })()}
