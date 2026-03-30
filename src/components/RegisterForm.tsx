@@ -4,6 +4,7 @@ import Image from 'next/image'
 import googleImage from '@/assets/google-logo-icon-gsuite-hd-701751694791470gzbayltphh.png'
 import React, { useState } from 'react'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 type propType={
     previousStep:(s:number)=>void
@@ -14,6 +15,7 @@ const RegisterForm = ({previousStep}:propType) => {
     const [password,setPassword]=useState("");
     const [showPassword,setshowPassword]=useState(false);
     const [loading,setLoding]=useState(false);
+    const router=useRouter();
     const handleRegister=async (e:React.FormEvent)=>{
         e.preventDefault()
         try{
@@ -139,7 +141,8 @@ const RegisterForm = ({previousStep}:propType) => {
                         </button>
 
             </motion.form>
-            <p className='text-gray-600 mt-6 text-sm flex items-center gap-1 cursor-pointer'>
+            <p className='text-gray-600 mt-6 text-sm flex items-center gap-1 cursor-pointer'
+            onClick={()=>router.push("/login")}>
                 Already have an account ? <LogIn className='w-4 h-4 cursor-pointer'/><span className='text-green-500'>Sign in</span></p>
 
         </div>
