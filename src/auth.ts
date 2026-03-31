@@ -4,6 +4,7 @@ import connectDb from "./lib/db"
 import User from "./models/user.model";
 
 import bcrypt from "bcryptjs";
+import Google from "next-auth/providers/google";
  
 export const { handlers, signIn, signOut, auth } = NextAuth({
   //process while sign in
@@ -37,9 +38,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
  
     },
       
-  )
+  ),
+  Google({
+    clientId:process.env.GOOGLE_CLIENT_ID,
+    clientSecret:process.env.GOOGLE_CLIENT_SECRET
+  })
   ],
   callbacks:{
+    async signIn({user, account}){
+      console.log("parems in callback :",user,account);
+        if(account?.provider=="google"){
+          await connectDb()//conniting data base
+          let dbUser = await User.findOne({email:user.email})
+          if(!dbUser){
+            dbUser=await User.create({
+              name:user.name,
+              email:user.email,
+              image:user.image
+            })
+          }
+        //google will give u name,email,image but role and id is missing so we are removing it from dbUser
+        user.id=dbUser._id.toString()
+        user.role=dbUser.role
+        }
+        return true
+    },
     //tooken is genrated while sign in but there is no data in token 
     // puting data in tooken
     // in this tow callback jwt and session user data is in token and token data is in session
@@ -59,6 +82,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.email=token.email as string;
         session.user.role=token.role as string;
       }
+      
       return session;
     }
 

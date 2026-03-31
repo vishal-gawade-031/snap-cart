@@ -5,6 +5,7 @@ import googleImage from '@/assets/google-logo-icon-gsuite-hd-701751694791470gzba
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 
 type propType={
     previousStep:(s:number)=>void
@@ -135,7 +136,9 @@ const RegisterForm = ({previousStep}:propType) => {
                         </div>
 
                         <button className='w-full flex items-center justify-center gap-3 border border-gray-300
-                        hover:bg-gray-50 py-3 rounded-b-xl text-gray-700 font-medium transition-all duration-200'>
+                        hover:bg-gray-50 py-3 rounded-b-xl text-gray-700 font-medium transition-all duration-200'
+                        // signIn is inbuilt function of auth js
+                        onClick={()=>signIn("google")}>
                             <Image src={googleImage} width={20} height={20} alt='google image'/>
                             Continue with Google 
                         </button>

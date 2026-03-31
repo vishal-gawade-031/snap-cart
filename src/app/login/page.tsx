@@ -6,7 +6,7 @@ import googleImage from '@/assets/google-logo-icon-gsuite-hd-701751694791470gzba
 import React, { FormEvent, useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 
 
 const Login = () => {
@@ -15,6 +15,8 @@ const Login = () => {
     const [showPassword,setshowPassword]=useState(false);
     const [loading,setLoding]=useState(false);
     const router=useRouter();
+    const session=useSession();
+    console.log(session);
     const handleLogin=async (e:FormEvent)=>{
         e.preventDefault();
         setLoding(true)
@@ -118,7 +120,8 @@ const Login = () => {
                         </div>
 
                         <button className='w-full flex items-center justify-center gap-3 border border-gray-300
-                        hover:bg-gray-50 py-3 rounded-b-xl text-gray-700 font-medium transition-all duration-200'>
+                        hover:bg-gray-50 py-3 rounded-b-xl text-gray-700 font-medium transition-all duration-200'
+                        onClick={()=>signIn("google")}>
                             <Image src={googleImage} width={20} height={20} alt='google image'/>
                             Continue with Google 
                         </button>
@@ -128,7 +131,7 @@ const Login = () => {
              onClick={()=>router.push("/register")}>
                want to create an account ? <LogIn className='w-4 h-4 cursor-pointer'/>
                <span className='text-green-500'>Sign up</span></p>
-
+  
         </div>
   )
 }
