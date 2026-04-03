@@ -8,7 +8,7 @@ import path from "path";
 export async function proxy(req:NextRequest){
     const{pathname}=req.nextUrl
     // console.log("pathname:",pathname);
-    const publicRoutes=["/login","/register","/api/auth","/favicon.ico","/_next"]
+    const publicRoutes=["/login","/register","/api/auth"]
             if(publicRoutes.some((path)=>pathname.startsWith(path))){
                 return NextResponse.next();
             }
@@ -26,7 +26,17 @@ export async function proxy(req:NextRequest){
          loginUrl.searchParams.set("callbackUrl",req.url);
         return NextResponse.redirect(loginUrl);
     }
-    else{
-            return NextResponse.next();
-    }
+   return NextResponse.next();
+}
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
 }
