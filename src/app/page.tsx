@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import EditRoleMobile from "@/components/EditRoleMobile";
+import Nav from "@/components/Nav";
 import connectDb from "@/lib/db";
 import User from "@/models/user.model";
 import { redirect } from "next/navigation";
@@ -19,9 +20,10 @@ async function Home(){
        return <EditRoleMobile/>
     }
   return(
-    <div>
-
-    </div>
+    <>
+    {/* alreday we are featching the user information so pass it throw the prop  */}
+    <Nav user={user}/>
+    </>
   )
 }
 export default Home 
