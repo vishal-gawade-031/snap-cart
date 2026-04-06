@@ -3,7 +3,9 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import mongoose from 'mongoose'
 import Image from "next/image"
-import { Search, ShoppingCartIcon, User } from 'lucide-react'
+import { LogOut, Package, Search, ShoppingCartIcon, User } from 'lucide-react'
+import { AnimatePresence,motion } from 'motion/react'
+import { signOut } from 'next-auth/react'
 interface IUser{
     _id?:mongoose.Types.ObjectId
     name:string
@@ -43,6 +45,45 @@ function Nav({user}:{user:IUser}) {
                 {/* image of google  */}
                 {user.image?<Image src={user.image} alt='image' fill className='object-cover rounded-full'/>:<User/>}
             </div>
+            <AnimatePresence>
+                {open &&
+                 <motion.div
+                 initial={{
+                    opacity:0, y: -10, scale:0.95
+                 }}
+                 animate={{
+                    opacity:1,y:0,scale:1
+                 }}
+                 transition={{duration:0.6}}
+                 exit={{opacity:0,y:-10,scale:0.95}}
+                 className='absolute right-0 mt-3 bg-white w-56 rounded-xl shadow-xl border-gray-200 p-3 z-999'
+                 >
+                       <div className="flex  items-center gap-3 px-3 py-2 border-b bord-g
+                       ">
+                        <div className="w-10 relative h-10 rounded-full bg-green-100 flex items-center justify-center overflow-hidden">
+                            {user.image?<Image src={user.image} alt='image' fill className='object-cover rounded-full'/>:<User/>}
+                        </div>
+
+                        <div className='text-gray-800 font-medium'>{user.name}</div>
+                        <div className='text-2xl text-gray-500 '>{user.role}</div>
+
+                        </div>   
+
+                        <Link href={""} className='flex items-center gap-2 px-3 hover:bg-green-50 rounded-lg text-gray-700
+                        font-medium ' onClick={()=>setOpen(false)}>
+                               <Package className='w-5 h-5 text-green-600'/> My Orders
+                        </Link>
+                        <button className='flex items-center gap-2 w-full text-left px-3 py-3 hover:bg-red-50 rounded-lg text-gray-700 font-medium'>
+                            <LogOut className='w-5 h-5 text-red-600' onClick={()=>{
+                                setOpen(false);
+                                signOut({redirectTo:"/login"})
+                            }}/>
+                            {/* have to call  the sign out function witch is provided by next auth ( for log out) */}
+                            Log Out
+                        </button>
+                    
+                    </motion.div>}
+            </AnimatePresence>
             </div>
         </div>
 

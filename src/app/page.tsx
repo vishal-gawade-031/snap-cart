@@ -19,10 +19,13 @@ async function Home(){
     if(inComplete){
        return <EditRoleMobile/>
     }
+    // passing  as a prop 
+    const plainUser=JSON.parse(JSON.stringify(user))
+  
   return(
     <>
     {/* alreday we are featching the user information so pass it throw the prop  */}
-    <Nav user={user}/>
+    <Nav user={plainUser}/>
     </>
   )
 }
