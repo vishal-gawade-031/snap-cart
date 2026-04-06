@@ -1,8 +1,9 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import mongoose from 'mongoose'
 import Image from "next/image"
-import { Search, ShoppingCart, ShoppingCartIcon, User } from 'lucide-react'
+import { Search, ShoppingCartIcon, User } from 'lucide-react'
 interface IUser{
     _id?:mongoose.Types.ObjectId
     name:string
@@ -14,6 +15,7 @@ interface IUser{
 }
 function Nav({user}:{user:IUser}) {
    // console.log(user);
+   const [open,setOpen]=useState(false);
   return (
     <div className='w-[95%] fixed top-4 left-1/2 -translate-x-1/2 bg-linear-to-r from-green-500 to-green-700
     rounded-2xl shodow-lg shadow-black/30 flex justify-between items-center h-20 px-4
@@ -35,11 +37,12 @@ function Nav({user}:{user:IUser}) {
             <span className='absolute -top-1 -right-1 bg-red-500 text-white text
              w-5 h-5 flex items-center justify-center rounded-full font-semibold shadow'>0</span>
             </Link>
-
+        <div className="relative">
             <div className="bg-white rounded-full w-11 h-11 flex items-center justify-center overflow-hidden shadow-md
-            hover:scal-105 transition-transform relative">
+            hover:scal-105 transition-transform " onClick={()=>{setOpen(prev=>!prev)}}>
                 {/* image of google  */}
                 {user.image?<Image src={user.image} alt='image' fill className='object-cover rounded-full'/>:<User/>}
+            </div>
             </div>
         </div>
 
