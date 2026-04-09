@@ -4,7 +4,10 @@ import Nav from "@/components/Nav";
 import connectDb from "@/lib/db";
 import User from "@/models/user.model";
 import { redirect } from "next/navigation";
+import UserDashbord from "@/components/UserDashboard";
 import React from "react";
+import AdminDashboard from "@/components/AdminDashboard";
+import DeliveryBoy from "@/components/DeliveryBoy";
 
 async function Home(){
     await connectDb();
@@ -26,6 +29,12 @@ async function Home(){
     <>
     {/* alreday we are featching the user information so pass it throw the prop  */}
     <Nav user={plainUser}/>
+    {user.role == "user" ?(
+      <UserDashbord/>
+    ):user.role == 'admin'?(
+      <AdminDashboard/>
+    ):<DeliveryBoy/>}
+
     </>
   )
 }

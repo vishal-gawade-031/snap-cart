@@ -4,7 +4,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { LogOut, Package, Search, ShoppingCartIcon, User } from 'lucide-react'
+import { Cross, LogOut, Package, Search, SearchAlert, ShoppingCartIcon, User, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { signOut } from 'next-auth/react'
 import mongoose from 'mongoose'
@@ -21,7 +21,8 @@ interface IUser {
 
 function Nav({ user }: { user: IUser }) {
   const [open, setOpen] = useState(false)
-  const profileDropDown = useRef<HTMLDivElement>(null)
+  const profileDropDown = useRef<HTMLDivElement>(null);
+  const [searchBarOpen,setSearchBarOpen]=useState(false)
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -63,7 +64,13 @@ function Nav({ user }: { user: IUser }) {
       </form>
 
       <div className='flex items-center gap-3 md:gap-6 relative'>
-       
+        {/* search icon when it come to phone size */}
+
+        <div className="bg-white rounded-full w-11 h-11 flex items-center justify-center shadow-md
+         hover:scale-105 transition md:hidden" onClick={() => setSearchBarOpen((prev)=>!prev)}>
+          <Search className='text-green-600 w-6 h-6'/>
+         </div>
+
         <Link
           href={""}
           className='relative bg-white rounded-full w-11 h-11 flex items-center justify-center shadow-md hover:scale-105 transition'
@@ -158,6 +165,39 @@ function Nav({ user }: { user: IUser }) {
                 </button>
               </motion.div>
             )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+              {searchBarOpen && <motion.div
+              initial={{
+                  opacity: 0,
+                  y: -10,
+                  scale: 0.95,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                }}
+                exit={{
+                  opacity: 0,
+                  y: -10,
+                  scale: 0.95,
+                }}
+                 className='fixed top-24 left-1/2 -translate-1/2 w-[90%] bg-white rounded-full shadow-lg z-40 flex
+                 items-center px-4 py-2'>
+                  <search className='text-gray-500 w-5 h-5 mr-2'/>
+
+                  <form className='grow'>
+                    <input type="text" className='w-full outline-none
+                    text-gray-700' placeholder='search grocery'/>
+
+                  </form>
+                  <button onClick={()=>{setSearchBarOpen(false)}}>
+                      <X className='text-gray-500 w-5 h-5'/>
+                  </button>
+                 </motion.div> 
+              }
           </AnimatePresence>
         </div>
       </div>
