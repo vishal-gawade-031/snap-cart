@@ -1,5 +1,5 @@
 'use client'
-import { Leaf, ShoppingBasket, Smartphone, Truck } from 'lucide-react'
+import { Leaf, ShoppingBasket, Sliders, Smartphone, Truck } from 'lucide-react'
 import { AnimatePresence } from 'motion/react'
 import { title } from 'process'
 import React, { useEffect, useState } from 'react'
@@ -76,12 +76,21 @@ setCurrent(prev => (prev + 1) % slides.length)
           <motion.button
           whileHover={{scale:1.09}}
           whileTap={{scale:0.96}}
+          transition={{duration:0.2}}
           className='mt-4 bg-white text-green-700 hover:bg-green-100 px-8 py-3 rounded-full font-semibold
           shadow-lg transition-all duration-300 flex items-center gap-2'>
             <ShoppingBasket className='w-5 h-5'/>
             {slides[current].btnText}
           </motion.button>
         </motion.div>
+      </div>
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3">
+            {slides.map((_,index)=>(
+              <button key={index}
+              className={`w-3 h-3 rounded-full transition-all ${
+                index === current ? "bg-white w-6" :  "bg-white/50"
+              }`} />
+            ))}
       </div>
     </div>
   )
