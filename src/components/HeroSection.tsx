@@ -68,6 +68,7 @@ setCurrent(prev => (prev + 1) % slides.length)
           y:30,opacity:0
         }}
         animate={{y:0,opacity:1}}
+      
         className='flex flex-col items-center justify-center gap-6 max-w-3xl'
         >
           <div className='bg-white/10 backdrop-blur-md p-6 rounded-full shadow-lg '>{slides[current].icon}</div>
