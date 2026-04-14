@@ -47,3 +47,6 @@ const grocerySchema=new mongoose.Schema<IGrocery>({
 })
 // this is for no dupklite of model 
 const Grocery=mongoose.models.Grocery || mongoose.model("Grocery",grocerySchema)
+
+export default Grocery
+
