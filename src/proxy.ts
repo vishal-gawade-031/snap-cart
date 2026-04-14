@@ -26,6 +26,8 @@ export async function proxy(req:NextRequest){
          loginUrl.searchParams.set("callbackUrl",req.url);
         return NextResponse.redirect(loginUrl);
     }
+
+    
    return NextResponse.next();
 }
 export const config = {
