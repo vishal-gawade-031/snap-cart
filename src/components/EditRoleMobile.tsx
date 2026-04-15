@@ -5,6 +5,7 @@ import { motion } from "motion/react"
 import { ArrowRightFromLine, Bike, User, UserCog } from 'lucide-react'
 import axios from "axios"
 import { useRouter } from "next/navigation"
+import { useSession } from 'next-auth/react'
 
 export default function EditRoleMobile() {
   const router = useRouter()
@@ -17,13 +18,14 @@ export default function EditRoleMobile() {
 
   const [selectedRole, setSelectedRole] = useState("")
   const [mobile, setMobile] = useState("")
-
+  const {update}=useSession()
   const handleEdit = async () => {
     try {
       const result = await axios.post("/api/user/edit-role-mobile", {
         role: selectedRole,
         mobile
       })
+      await update({role:selectedRole})
 
       //console.log(result.data)
       router.push("/")

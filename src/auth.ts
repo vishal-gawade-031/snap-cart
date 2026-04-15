@@ -66,13 +66,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     //tooken is genrated while sign in but there is no data in token 
     // puting data in tooken
     // in this tow callback jwt and session user data is in token and token data is in session
-    jwt({token,user}){
+    jwt({token,user,session,trigger}){
       if(user){
         token.id=user.id,
         token.name=user.name,
         token.email=user.email,
         token.role=user.role
       }
+      if(trigger=="update"){
+        token.role=session.role
+      }
+
+
       return token;
     },
     session({session,token}){
@@ -82,7 +87,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.email=token.email as string;
         session.user.role=token.role as string;
       }
-      
+
       return session;
     }
 

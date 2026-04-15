@@ -43,6 +43,7 @@ if(pathname.startsWith("/admin") && role!=="admin"){
 }
 export const config = {
   matcher: [
+    
     /*
      * Match all request paths except for the ones starting with:
      * - api (API routes)
