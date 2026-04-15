@@ -1,5 +1,6 @@
 //middleware
 
+import { url } from "inspector";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
@@ -18,8 +19,8 @@ export async function proxy(req:NextRequest){
         req,
         secret:process.env.AUTH_SECRET
     })
-    // console.log("token:",token);
-    console.log(req.url);
+    //console.log("token:",token);
+    //console.log(req.url);
     if(!token){
         const loginUrl=new URL("/login",req.url);
         //if user try to go home then it will push to login after user varified then it will redirect to home 
@@ -27,7 +28,17 @@ export async function proxy(req:NextRequest){
         return NextResponse.redirect(loginUrl);
     }
 
-    
+const role=token.role
+if(pathname.startsWith("/user") && role!=="user"){
+    return NextResponse.redirect(new URL("/unauthorized",req.url))
+}
+if(pathname.startsWith("/delivery") && role!=="deliveryBoy"){
+    return NextResponse.redirect(new URL ("/unauthorized",req.url))
+}
+if(pathname.startsWith("/admin") && role!=="admin"){
+    return NextResponse.redirect(new URL ("/unauthorized",req.url))
+}
+
    return NextResponse.next();
 }
 export const config = {

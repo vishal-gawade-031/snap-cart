@@ -25,7 +25,7 @@ export default function EditRoleMobile() {
         mobile
       })
 
-      console.log(result.data)
+      //console.log(result.data)
       router.push("/")
     } catch (error) {
       console.log(error)
