@@ -47,13 +47,44 @@ function Nav({ user }: { user: IUser }) {
       <motion.div
       initial={{x:-100,opacity:0}}
       animate={{x:0,opacity:1}}
-      exit={{x:-100,opacity:0}}
+      exit={{x:-100}}
       transition={{type:"spring",damping:14}}
       className='fixed top-0 left-0 h-full w-[75%] sm:w-[60%] z-999 bg-linear-to-b from-green-800/90 via-green-700/80
       to-green-900/90 backdrop-blur-xl border-r border-green-400/20 shadow-[0_0_50px_-10px_rgb(0,255,100,0.3)] flex flex-col p-6
       text-white'
       >
-        
+        <div className="flex justify-between items-center mb-2">
+          <h1 className='font-extrabold text-2xl tracking-wide text-white/90 '>Admin panel</h1>
+          <button className='text-white/60 hover:text-red-400 text-2xl font-bold transition 
+          ' onClick={()=>setMenuOpen(false)}>x</button>
+        </div>
+
+        <div className='flex items-center gap-3 p-3 mt-3 rounded-xl bg-white/10 hover:bg-white15 transition-all shadow-inner'>
+          <div className='w-10 h-10 relative rounded-full border-2 overflow-hidden'>
+            {user.image ? <Image src={user.image} alt="user" fill className='object-cover rounded-full'/>:<User/>}
+          </div>
+
+          <div>
+            <h2 className='text-lg font-semibold text-white'>{user.name}</h2>
+          <p className='text-xs text-green-200 capitalize tracking-wide'>{user.role}</p>
+          </div>
+          
+        </div>
+        <div className=" flex flex-col gap-3 mt-6 font-medium">
+ <Link href={"#"} className='flex items-center gap-2 bg-white text-green-700 font-semibold px-4 
+            py-2 rounded-4xl hover:bg-green-100 transition-all'><PlusCircle className='w-5 h-5'/>Add Grocery</Link>
+            <Link href={"#"} className='flex items-center gap-2 bg-white text-green-700 font-semibold px-4 
+            py-2 rounded-full hover:bg-green-100 transition-all'><Boxes className='w-5 h-5'/>view Grocery</Link>
+            <Link href={"#"} className='flex items-center gap-2 bg-white text-green-700 font-semibold px-4 
+            py-2 rounded-full hover:bg-green-100 transition-all'><ClipboardCheck className='w-5 h-5'/> manage Orders</Link>
+</div>
+
+<div className="flex items-center gap-3 transition-all  mt-auto"
+    onClick={async ()=> await signOut({callbackUrl:"/"})}>
+  <LogOut className='w-5 h-5 text-red-300'/>
+  Log Out
+</div>
+
 
       </motion.div>
 
