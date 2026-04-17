@@ -4,10 +4,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Boxes, ClipboardCheck, Cross, LogOut, Package, Plus, PlusCircle, Search, SearchAlert, ShoppingCartIcon, User, X } from 'lucide-react'
+import { Boxes, ClipboardCheck, Cross, LogOut, Menu, Package, Plus, PlusCircle, Search, SearchAlert, ShoppingCartIcon, User, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { signOut } from 'next-auth/react'
 import mongoose from 'mongoose'
+import { createPortal } from 'react-dom'
 
 interface IUser {
   _id?: mongoose.Types.ObjectId
@@ -22,8 +23,8 @@ interface IUser {
 function Nav({ user }: { user: IUser }) {
   const [open, setOpen] = useState(false)
   const profileDropDown = useRef<HTMLDivElement>(null);
-  const [searchBarOpen,setSearchBarOpen]=useState(false)
-
+  const [searchBarOpen,setSearchBarOpen]=useState(false);
+  const [menuOpen,setMenuOpen]=useState(false);
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -40,6 +41,24 @@ function Nav({ user }: { user: IUser }) {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
+//createportal ignor css config 
+  const sideBar=menuOpen ? createPortal(
+    <AnimatePresence>
+      <motion.div
+      initial={{x:-100,opacity:0}}
+      animate={{x:0,opacity:1}}
+      exit={{x:-100,opacity:0}}
+      transition={{type:"spring",damping:14}}
+      className='fixed top-0 left-0 h-full w-[75%] sm:w-[60%] z-999 bg-linear-to-b from-green-800/90 via-green-700/80
+      to-green-900/90 backdrop-blur-xl border-r border-green-400/20 shadow-[0_0_50px_-10px_rgb(0,255,100,0.3)] flex flex-col p-6
+      text-white'
+      >
+        
+
+      </motion.div>
+
+    </AnimatePresence>,document.body
+  ):null
 
   return (
     <div
@@ -84,7 +103,7 @@ function Nav({ user }: { user: IUser }) {
             0
           </span>
         </Link></>}
-
+{/* admin portal */}
         {user.role == "admin" && <>
           
           <div className="hidden md:flex items-center gap-4">
@@ -95,6 +114,10 @@ function Nav({ user }: { user: IUser }) {
             <Link href={"#"} className='flex items-center gap-2 bg-white text-green-700 font-semibold px-4 
             py-2 rounded-full hover:bg-green-100 transition-all'><ClipboardCheck className='w-5 h-5'/> manage Orders</Link>
 
+          </div>
+          <div className='md:hidden bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md' 
+          onClick={()=>setMenuOpen(prev=>!prev)}>
+            <Menu className='text-green-600 w-6 h-6'></Menu>
           </div>
         
         </>}
@@ -217,8 +240,10 @@ function Nav({ user }: { user: IUser }) {
                  </motion.div> 
               }
           </AnimatePresence>
+         
         </div>
       </div>
+ { sideBar}
     </div>
   )
 }
