@@ -71,11 +71,11 @@ function Nav({ user }: { user: IUser }) {
           
         </div>
         <div className=" flex flex-col gap-3 mt-6 font-medium">
- <Link href={"#"} className='flex items-center gap-2 bg-white text-green-700 font-semibold px-4 
+ <Link href={"/admin/add-grocery"} className='flex items-center gap-2 bg-white text-green-700 font-semibold px-4 
             py-2 rounded-4xl hover:bg-green-100 transition-all'><PlusCircle className='w-5 h-5'/>Add Grocery</Link>
-            <Link href={"#"} className='flex items-center gap-2 bg-white text-green-700 font-semibold px-4 
+            <Link href={"/admin/view-grocery"} className='flex items-center gap-2 bg-white text-green-700 font-semibold px-4 
             py-2 rounded-full hover:bg-green-100 transition-all'><Boxes className='w-5 h-5'/>view Grocery</Link>
-            <Link href={"#"} className='flex items-center gap-2 bg-white text-green-700 font-semibold px-4 
+            <Link href={"/admin/view-grocery"} className='flex items-center gap-2 bg-white text-green-700 font-semibold px-4 
             py-2 rounded-full hover:bg-green-100 transition-all'><ClipboardCheck className='w-5 h-5'/> manage Orders</Link>
 </div>
 
@@ -138,7 +138,7 @@ function Nav({ user }: { user: IUser }) {
         {user.role == "admin" && <>
           
           <div className="hidden md:flex items-center gap-4">
-            <Link href={"#"} className='flex items-center gap-2 bg-white text-green-700 font-semibold px-4 
+            <Link href={"/admin/add-grocery"} className='flex items-center gap-2 bg-white text-green-700 font-semibold px-4 
             py-2 rounded-full hover:bg-green-100 transition-all'><PlusCircle className='w-5 h-5'/>Add Grocery</Link>
             <Link href={"#"} className='flex items-center gap-2 bg-white text-green-700 font-semibold px-4 
             py-2 rounded-full hover:bg-green-100 transition-all'><Boxes className='w-5 h-5'/>view Grocery</Link>
