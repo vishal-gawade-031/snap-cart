@@ -13,7 +13,7 @@ export async function POST(req:NextRequest) {
             {status:400}
         }
         const formData=await req.formData()
-        console.log("form data:",formData);
+       console.log("form data:",formData);
         const name=formData.get("name") as string
         const category=formData.get("category") as string
         const unit = formData.get("unit") as string
