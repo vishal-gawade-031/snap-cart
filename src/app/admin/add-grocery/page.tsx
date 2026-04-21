@@ -2,7 +2,9 @@
 import { ArrowLeft, LucideAirVent, Plus, PlusCircle } from 'lucide-react'
 import Link from 'next/link'
 import {motion} from "motion/react"
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
+import { url } from 'inspector'
+import Image from 'next/image'
 
 const categories=[
            "Fruits & Vegetables",
@@ -21,9 +23,18 @@ const AddGrocery = () => {
     const [name,setName]=useState("");
     const [category,setCategory]=useState("");
     const [unit,setUnit]=useState("");
-    // const [price,setPrice]=useState("");
+     const [price,setPrice]=useState("");
     const [preview,setPreview]=useState<string | null>();
     const [backendImage,setBackendImage]=useState<Blob | null>()
+
+ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const files = e.target.files
+  if (!files || files.length === 0) return
+
+  const file = files[0]
+  setBackendImage(file)
+  setPreview(URL.createObjectURL(file))
+}
   return (
     <div className='min-h-screen flex items-center justify-center
     bg-linear-to-br from-green-50 to-white py-16 px-4 relative'>
@@ -91,7 +102,23 @@ const AddGrocery = () => {
                         <span className='text-red-500'>*</span>
                     </label>
                     <input type="text" id='name' placeholder='eg: 120' className='w-full border border-gray-300 
-                    rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-green-400 transition-all' />
+                    rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-green-400 transition-all'
+                    onChange={(e)=>setPrice(e.target.value)}
+                    value={price} 
+                    />
+                        </div>
+
+                                     <div >
+                    <label htmlFor='image' className='block text-gray-700 font-medium mb-1'>upload image
+                        <span className='text-red-500'>*</span>
+                    </label>
+                    <input type="file" id='name' placeholder='product Img' className='w-full border border-gray-300 
+                    rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-green-400 transition-all'
+                    onChange={handleImageChange}
+                     
+                    />
+                    {preview && <Image src={preview}  width={100} height={100} alt='image' 
+                    className='rounded-xl shadow-md border border-gray-200 object-cover'/>}
                         </div>
                 </form>
             </motion.div>

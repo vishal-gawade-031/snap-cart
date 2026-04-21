@@ -227,6 +227,7 @@ function Nav({ user }: { user: IUser }) {
               }
                 <button
                   onClick={() => {
+                    //usestate call 
                     setOpen(false)
                     signOut({ callbackUrl: '/login' })
                   }}
