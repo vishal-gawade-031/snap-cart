@@ -257,7 +257,7 @@ function Nav({ user }: { user: IUser }) {
                   scale: 0.95,
                 }}
                  className='fixed top-24 left-1/2 -translate-1/2 w-[90%] bg-white rounded-full shadow-lg z-40 flex
-                 items-center px-4 py-2'>
+                 items-center px-5 py-3'>
                   <search className='text-gray-500 w-5 h-5 mr-2'/>
 
                   <form className='grow'>
