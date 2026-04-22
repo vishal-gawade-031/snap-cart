@@ -26,7 +26,7 @@ const AddGrocery = () => {
      const [price,setPrice]=useState("");
     const [preview,setPreview]=useState<string | null>();
     const [backendImage,setBackendImage]=useState<Blob | null>()
-
+//IMg
  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const files = e.target.files
   if (!files || files.length === 0) return
@@ -108,18 +108,28 @@ const AddGrocery = () => {
                     />
                         </div>
 
-                                     <div >
+                                     <div className='flex flex-col sm:flex-row items-center gap-5' >
                     <label htmlFor='image' className='block text-gray-700 font-medium mb-1'>upload image
                         <span className='text-red-500'>*</span>
                     </label>
-                    <input type="file" id='name' placeholder='product Img' className='w-full border border-gray-300 
-                    rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-green-400 transition-all'
+                    <input type="file" id='name' hidden
                     onChange={handleImageChange}
-                     
                     />
                     {preview && <Image src={preview}  width={100} height={100} alt='image' 
                     className='rounded-xl shadow-md border border-gray-200 object-cover'/>}
                         </div>
+
+                           <label htmlFor='name' className='block text-gray-700 font-medium mb-1'>Price
+                        <span className='text-red-500'>*</span>
+                    </label>
+                    <input type="text" id='name' placeholder='eg: 120' className='w-full border border-gray-300 
+                    rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-green-400 transition-all'
+                    onChange={(e)=>setPrice(e.target.value)}
+                    value={price} 
+                    />
+                        
+
+                
                 </form>
             </motion.div>
     </div>
