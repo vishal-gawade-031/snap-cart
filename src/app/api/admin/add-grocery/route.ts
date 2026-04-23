@@ -9,8 +9,7 @@ export async function POST(req:NextRequest) {
         await connectDb()
         const session=await auth();
         if(session?.user?.role !== "admin"){
-            {message:"you are not an admin"},
-            {status:400}
+            {message:"you are not an admin"}
         }
         const formData=await req.formData()
        console.log("form data:",formData);
