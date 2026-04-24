@@ -54,6 +54,16 @@ const AddGrocery = () => {
             const result=await axios.post("/api/admin/add-grocery",formData)
             setLoding(false)
             console.log("api response:",result.data);
+
+            alert("Grocery has been added successfully");
+        // ✅ RESET FORM HERE
+        setName("");
+        setCategory("");
+        setPrice("");
+        setUnit("");
+        setBackendImage(null);
+        setPreview(null);
+
         }catch(error){
             console.log("error:=",error)
                 setLoding(false)
