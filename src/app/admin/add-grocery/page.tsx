@@ -1,5 +1,5 @@
 "use client";
-import { ArrowLeft, LucideAirVent, Plus, PlusCircle, Upload } from "lucide-react";
+import { ArrowLeft, Loader, LucideAirVent, Plus, PlusCircle, Upload } from "lucide-react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import React, { ChangeEvent, FormEvent, useState } from "react";
@@ -19,13 +19,14 @@ const categories = [
     "Instant & Packaged Food",
     "Baby & Pet Care",
 ];
-const units = ["kg", "g", "liter", "ml", "piece", "pack"];
+const units = ["kg", "g", "litre", "ml", "piece", "pack"];
 const AddGrocery = () => {
     const [name, setName] = useState("");
     const [category, setCategory] = useState("");
     const [unit, setUnit] = useState("");
     const [price, setPrice] = useState("");
-    const [preview, setPreview] = useState<string | null>();
+    const [loading,setLoding]=useState(false)
+   const [preview, setPreview] = useState<string | null>(null)
     const [backendImage, setBackendImage] = useState<Blob | null>();
     //IMg
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +40,7 @@ const AddGrocery = () => {
     //after submit
     const handleSubmit=async (e:FormEvent)=>{
         e.preventDefault()
+        setLoding(true);
         try{
             const formData=new FormData()
             formData.append("name",name)
@@ -50,9 +52,11 @@ const AddGrocery = () => {
             }
 
             const result=await axios.post("/api/admin/add-grocery",formData)
-            console.log(result.data);
+            setLoding(false)
+            console.log("api response:",result.data);
         }catch(error){
             console.log("error:=",error)
+                setLoding(false)
         }
     }
     return (
@@ -119,9 +123,13 @@ const AddGrocery = () => {
                                 onChange={(e) => setCategory(e.target.value)}
                             >
                                 <option value="">Select Category</option>
-                                {categories.map((cat) => (
-                                    <option value={cat}>{cat}</option>
-                                ))}
+                             {categories.map((cat) => (
+                               <option key={cat} value={cat}>
+                                       {cat}
+                               </option>
+                                  ))}
+
+                                
                             </select>
                         </div>
                         <div className="">
@@ -155,7 +163,7 @@ const AddGrocery = () => {
                         </label>
                         <input
                             type="text"
-                            id="name"
+                            id="price"
                             placeholder="eg: 120"
                             className="w-full border border-gray-300 
                     rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-green-400 transition-all"
@@ -187,10 +195,12 @@ const AddGrocery = () => {
                     <motion.button
                     whileHover={{scale:1.01}}
                     whileTap={{scale:0.9}}
+                    disabled={loading}
                     className="mt-4 w-full bg-linear-to-r from-green-500 to-green-700 text-white font-semibold py-3
                     rounded-xl shadow-lg hover:shadow-xl disabled:opacity-60 transition-all flex items-center justify-center gap-2"
                     >
-                        Add Grocery
+                    {loading?<Loader className="w-5 h-5 animate-spin"/>:"Add Grocery"}
+                        
 
                     </motion.button>
                 </form>

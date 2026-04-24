@@ -6,21 +6,38 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req:NextRequest) {
     try{
+
         await connectDb()
         const session=await auth();
         if(session?.user?.role !== "admin"){
-            {message:"you are not an admin"}
+            return NextResponse.json(
+                { message: "you are not an admin" },
+                { status: 403 }
+            )
         }
+
+        
         const formData=await req.formData()
-       console.log("form data:",formData);
+    //    console.log("form data:",formData);
         const name=formData.get("name") as string
         const category=formData.get("category") as string
         const unit = formData.get("unit") as string
         const price = formData.get("price") as string
         const file = formData.get("image") as Blob | null
-
+        console.log("printing file in rout:",file);
+        if (!name || !category || !unit || !price) {
+    return NextResponse.json(
+        { message: "All fields are required" },
+        { status: 400 }
+    )
+}
+//check the data
+// for (let pair of formData.entries()) {
+//     console.log(pair[0], pair[1])
+// }
         let imageUrl;
         if(file){
+            console.log(file);
             imageUrl=await uploadOnCloudinary(file);
         }
         const grocery=await Grocery.create({
