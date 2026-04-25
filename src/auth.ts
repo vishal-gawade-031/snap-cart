@@ -46,7 +46,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks:{
     async signIn({user, account}){
-      console.log("parems in callback :",user,account);
+    //  console.log("parems in callback :",user,account);
         if(account?.provider=="google"){
           await connectDb()//conniting data base
           let dbUser = await User.findOne({email:user.email})
