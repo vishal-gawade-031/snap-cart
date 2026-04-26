@@ -1,5 +1,5 @@
 'use client'
-import { Apple, Baby, Box, Coffee, Cookie, Flame, Heart, Home, Milk, Wheat } from 'lucide-react'
+import { Apple, Baby, Box, ChevronLeft, Coffee, Cookie, Flame, Heart, Home, Milk, Wheat } from 'lucide-react'
 import { motion } from 'motion/react'
 import React from 'react'
 
@@ -27,15 +27,25 @@ const CategorySlider = () => {
         viewport={{once:false,amount:0.5}}
         >
             <h2 className='text-2xl md:text-3xl text-green-700 mb-6 text-center'>shop by category</h2>
+            <button className='absolute left-0 top-1/2 -translate-1/2 z-10 bg-white shadow-lg 
+            hover:bg-green-100 rounded-full w-10 h-10 flex items-center justify-center transition-all'><ChevronLeft/></button>
                 <div className="flex gap-6 overflow-auto px-10 pb-4 scrollbar-hide scroll-smooth">
 
                     {categories.map((cat)=>{
                         const Icon=cat.icon
                         return <motion.div
                         key={cat.id}
-                        className={`min-w-[150px md:min-w-[180px]]`}
+                        className={`min-w-[150px md:min-w-[180px]] flex flex-col items-center justify-center rounded-2xl ${cat.color} 
+                        shadow-md hover:shadow-xl transition-all cursor-pointer`}
+                        > 
+                        <div className="flex flex-col items-center justify-center p-5">
+                            <Icon className='w-10 h-10 text-green-700 mb-3'/>
+                            <p className='text-center text-sm md:text-base font-semibold text-gray-700'>{cat.name}</p>
+                        </div>
+                        </motion.div>
                     })}
                 </div>
+            <button></button>
         </motion.div>
     )
 }
