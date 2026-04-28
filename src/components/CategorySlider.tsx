@@ -1,5 +1,32 @@
 'use client'
-import { Apple, Baby, Box, ChevronLeft, Coffee, Cookie, Flame, Heart, Home, Milk, Wheat } from 'lucide-react'
+import {
+  Apple,
+  Milk,
+  Wheat,
+  Cookie,
+  Flame,
+  Coffee,
+  Heart,
+  Home,
+  Box,
+  Baby,
+  Snowflake,
+  Sandwich,
+  Fish,
+  Leaf,
+  Sunrise,
+  
+  Nut,
+  Sparkles,
+  PenTool,
+  Utensils,
+  Activity,
+  Brush,
+  Flower,
+  Timer,
+  PartyPopper,
+  ChevronLeft
+} from "lucide-react";
 import { motion } from 'motion/react'
 import React from 'react'
 
@@ -15,7 +42,22 @@ const CategorySlider = () => {
         { id: 7, name: "Personal Care", icon: Heart, color: "bg-purple-100" },
         { id: 8, name: "Household Essentials", icon: Home, color: "bg-lime-100" },
         { id: 9, name: "Instant & Packaged Food", icon: Box, color: "bg-teal-100" },
-        { id: 10, name: "Baby & Pet Care", icon: Baby, color: "bg-rose-100" }
+        { id: 10, name: "Baby & Pet Care", icon: Baby, color: "bg-rose-100" },
+        { id: 11, name: "Frozen Foods", icon: Snowflake, color: "bg-cyan-100" },
+{ id: 12, name: "Bakery & Breads", icon: Sandwich, color: "bg-amber-100" },
+{ id: 13, name: "Meat & Seafood", icon: Fish, color: "bg-sky-100" },
+{ id: 14, name: "Organic & Healthy", icon: Leaf, color: "bg-emerald-100" },
+{ id: 15, name: "Breakfast & Cereals", icon: Sunrise, color: "bg-yellow-200" },
+
+{ id: 17, name: "Dry Fruits & Nuts", icon: Nut, color: "bg-orange-200" },
+{ id: 18, name: "Cleaning Supplies", icon: Sparkles, color: "bg-blue-200" },
+{ id: 19, name: "Stationery", icon: PenTool, color: "bg-indigo-100" },
+{ id: 20, name: "Kitchen & Dining", icon: Utensils, color: "bg-gray-200" },
+{ id: 21, name: "Health & Wellness", icon: Activity, color: "bg-green-200" },
+{ id: 22, name: "Beauty & Cosmetics", icon: Brush, color: "bg-pink-200" },
+{ id: 23, name: "Pooja Items", icon: Flower, color: "bg-yellow-100" },
+{ id: 24, name: "Ready to Eat", icon: Timer, color: "bg-orange-100" },
+{ id: 25, name: "Party Supplies", icon: PartyPopper, color: "bg-purple-200" }
     ]
     return (
          
