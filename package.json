@@ -12,6 +12,7 @@
     "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.9.0",
+    "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.7.0",
     "mongoose": "^9.1.5",
     "motion": "^12.38.0",
