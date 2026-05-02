@@ -16,7 +16,7 @@ const Login = () => {
     const [loading,setLoding]=useState(false);
     const router=useRouter();
     const session=useSession();
-    console.log(session);
+    console.log("session in login ",session);
     const handleLogin=async (e:FormEvent)=>{
         e.preventDefault();
         setLoding(true)
