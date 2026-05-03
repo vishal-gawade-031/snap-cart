@@ -34,7 +34,19 @@ const CategorySlider = () => {
         setShowLeft(scrollLeft > 0)
         setShowRight(scrollLeft + clientWidth <= scrollWidth -5)
     }
-    
+
+    useEffect(()=>{
+     const autoScroll=setInterval(()=>{
+            if(!scrollRef.current)return
+            const {scrollLeft,scrollWidth,clientWidth}=scrollRef.current
+            if(scrollLeft + clientWidth >= scrollWidth -5){
+                scrollRef.current.scrollTo({left:0,behavior:"smooth"})
+            }else{
+                scrollRef.current.scrollBy({left:300,behavior:"smooth"})
+                        }
+        },3000)
+        return ()=>clearInterval(autoScroll)
+    },[])
     useEffect(()=>{
         scrollRef.current?.addEventListener("scroll",checkScroll)
         checkScroll()
@@ -64,11 +76,11 @@ const CategorySlider = () => {
                     return (
                         <motion.div
                             key={cat.id}
-                            className={`min-w-[150px md:min-w-[180px]] flex flex-col items-center justify-center rounded-2xl ${cat.color} 
+                            className={`min-w-37.5 md:min-w-45 h-40 md:h-45 flex flex-col items-center justify-center rounded-2xl  ${cat.color} 
                         shadow-md hover:shadow-xl transition-all cursor-pointer`}
                         >
-                            <div className="flex flex-col items-center justify-center p-5">
-                                <Icon className="w-10 h-10 text-green-700 mb-3" />
+                            <div className="flex flex-col items-center justify-center p-5 ">
+                                <Icon className="w-10 h-10 text-green-700 mb-3 shrink-0" strokeWidth={1.5} />
                                 <p className="text-center text-sm md:text-base font-semibold text-gray-700">
                                     {cat.name}
                                 </p>
