@@ -25,8 +25,8 @@ const AddGrocery = () => {
     const [category, setCategory] = useState("");
     const [unit, setUnit] = useState("");
     const [price, setPrice] = useState("");
-    const [loading,setLoding]=useState(false)
-   const [preview, setPreview] = useState<string | null>(null)
+    const [loading, setLoding] = useState(false)
+    const [preview, setPreview] = useState<string | null>(null)
     const [backendImage, setBackendImage] = useState<Blob | null>();
     //IMg
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,35 +38,35 @@ const AddGrocery = () => {
         setPreview(URL.createObjectURL(file));
     };
     //after submit
-    const handleSubmit=async (e:FormEvent)=>{
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
         setLoding(true);
-        try{
-            const formData=new FormData()
-            formData.append("name",name)
-            formData.append("category",category)
-            formData.append("price",price)
-            formData.append("unit",unit)
-            if(backendImage){
-                formData.append("image",backendImage)
+        try {
+            const formData = new FormData()
+            formData.append("name", name)
+            formData.append("category", category)
+            formData.append("price", price)
+            formData.append("unit", unit)
+            if (backendImage) {
+                formData.append("image", backendImage)
             }
 
-            const result=await axios.post("/api/admin/add-grocery",formData)
+            const result = await axios.post("/api/admin/add-grocery", formData)
             setLoding(false)
-            console.log("api response:",result.data);
+            console.log("api response:", result.data);
 
             alert("Grocery has been added successfully");
-        // ✅ RESET FORM HERE
-        setName("");
-        setCategory("");
-        setPrice("");
-        setUnit("");
-        setBackendImage(null);
-        setPreview(null);
+            // ✅ RESET FORM HERE
+            setName("");
+            setCategory("");
+            setPrice("");
+            setUnit("");
+            setBackendImage(null);
+            setPreview(null);
 
-        }catch(error){
-            console.log("error:=",error)
-                setLoding(false)
+        } catch (error) {
+            console.log("error:=", error)
+            setLoding(false)
         }
     }
     return (
@@ -133,13 +133,13 @@ const AddGrocery = () => {
                                 onChange={(e) => setCategory(e.target.value)}
                             >
                                 <option value="">Select Category</option>
-                             {categories.map((cat) => (
-                               <option key={cat} value={cat}>
-                                       {cat}
-                               </option>
-                                  ))}
+                                {categories.map((cat) => (
+                                    <option key={cat} value={cat}>
+                                        {cat}
+                                    </option>
+                                ))}
 
-                                
+
                             </select>
                         </div>
                         <div className="">
@@ -187,7 +187,7 @@ const AddGrocery = () => {
                             htmlFor="image"
                             className="block text-gray-700 font-medium mb-1 border border-green-800 rounded-3xl p-3"
                         >
-                           <Upload className="w-5 h-5"/> upload image
+                            <Upload className="w-5 h-5" /> upload image
                             <span className="text-red-500">*</span>
                         </label>
                         <input type="file" id="image" accept="image/*" hidden onChange={handleImageChange} />
@@ -203,14 +203,14 @@ const AddGrocery = () => {
                     </div>
 
                     <motion.button
-                    whileHover={{scale:1.01}}
-                    whileTap={{scale:0.9}}
-                    disabled={loading}
-                    className="mt-4 w-full bg-linear-to-r from-green-500 to-green-700 text-white font-semibold py-3
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.9 }}
+                        disabled={loading}
+                        className="mt-4 w-full bg-linear-to-r from-green-500 to-green-700 text-white font-semibold py-3
                     rounded-xl shadow-lg hover:shadow-xl disabled:opacity-60 transition-all flex items-center justify-center gap-2"
                     >
-                    {loading?<Loader className="w-5 h-5 animate-spin"/>:"Add Grocery"}
-                        
+                        {loading ? <Loader className="w-5 h-5 animate-spin" /> : "Add Grocery"}
+
 
                     </motion.button>
                 </form>
