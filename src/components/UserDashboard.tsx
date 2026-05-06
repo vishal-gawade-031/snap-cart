@@ -9,8 +9,8 @@ async function UserDashboard() {
   connectDb()
   const groceries=await Grocery.find({})
   const plainGrocery = JSON.parse(JSON.stringify(groceries))
-  console.log("groceries",groceries);
-  console.log("plaingrocery",plainGrocery);
+  // console.log("groceries",groceries);
+  // console.log("plaingrocery",plainGrocery);
   return (
     <div>
      <>
