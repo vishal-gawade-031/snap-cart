@@ -1,4 +1,5 @@
 "use client";
+import Unauthorized from "@/app/unauthorized/page";
 import {Apple,Milk,Wheat,Cookie,Flame, Coffee,Heart,Home,Box,Baby,Snowflake,Sandwich,Fish,Leaf,Sunrise, Nut,Sparkles,PenTool,Utensils,Activity,Brush,Flower,Timer, PartyPopper,ChevronLeft, ChevronRight,} from "lucide-react";
 import { motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
@@ -96,6 +97,7 @@ const CategorySlider = () => {
                 <ChevronRight />
             </button>}
         </motion.div>
+      
     );
 };
 
