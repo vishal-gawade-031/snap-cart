@@ -16,9 +16,9 @@ async function UserDashboard() {
      <>
         <HeroSection/>
         <CategorySlider/>
-        {plainGrocery.map((item:any)=>{
-          <GroceryItemCard key={item._id} item={item}/>
-        })}
+        {plainGrocery.map((item: any) => (
+          <GroceryItemCard key={item._id ?? item.id} item={item} />
+        ))}
         
      </>
     </div>
