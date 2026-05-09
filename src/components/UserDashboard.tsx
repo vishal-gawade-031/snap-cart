@@ -16,8 +16,8 @@ async function UserDashboard() {
      <>
         <HeroSection/>
         <CategorySlider/>
-        {plainGrocery.map((item: any) => (
-          <GroceryItemCard key={item._id ?? item.id} item={item} />
+        {plainGrocery.map((item: any,index:number) => (
+          <GroceryItemCard key={index} item={item} />
         ))}
         
      </>
