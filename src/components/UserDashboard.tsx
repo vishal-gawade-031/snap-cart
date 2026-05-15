@@ -4,6 +4,7 @@ import CategorySlider from './CategorySlider'
 import GroceryItemCard from './GroceryItemCard'
 import connectDb from '@/lib/db'
 import Grocery from '@/models/grocery.model'
+import ProductAnalises from './ProductAnalises'
 async function UserDashboard() {
 
   connectDb()
@@ -24,6 +25,7 @@ async function UserDashboard() {
           <GroceryItemCard key={index} item={item} />
         ))}
         </div>
+        <ProductAnalises/>
         </div>
      </>
     
