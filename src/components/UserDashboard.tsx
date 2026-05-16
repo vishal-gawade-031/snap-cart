@@ -5,9 +5,10 @@ import GroceryItemCard from './GroceryItemCard'
 import connectDb from '@/lib/db'
 import Grocery from '@/models/grocery.model'
 import ProductAnalises from './ProductAnalises'
+
 async function UserDashboard() {
 
-  connectDb()
+  await connectDb()
   const groceries=await Grocery.find({})
   const plainGrocery = JSON.parse(JSON.stringify(groceries))
   // console.log("groceries",groceries);
@@ -25,7 +26,7 @@ async function UserDashboard() {
           <GroceryItemCard key={index} item={item} />
         ))}
         </div>
-        <ProductAnalises/>
+        {/* <ProductAnalises/> */}
         </div>
      </>
     

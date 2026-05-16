@@ -189,8 +189,7 @@ function Nav({ user }: { user: IUser }) {
                   scale: 0.95,
                 }}
                 transition={{ duration: 0.3 }}
-                className='absolute right-0 mt-3 bg-white w-56 rounded-xl shadow-xl border border-gray-200 p-3 z-999'
-              >
+                className='absolute right-0 mt-3 bg-white w-56 rounded-xl shadow-xl border border-gray-200 p-3 z-999'>
 
               {/* profile */}
                 <div className='flex items-center gap-3 px-3 py-2 border-b border-gray-200 pb-3'>
