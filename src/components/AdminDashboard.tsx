@@ -1,8 +1,12 @@
 import React from 'react'
+import AdminPanelActions from './AdminPanelActions'
 import ProductAnalises from './ProductAnalises'
 
 export default function AdminDashboard() {
   return (
-    <ProductAnalises />
+    <>
+      <AdminPanelActions />
+      <ProductAnalises />
+    </>
   )
 }

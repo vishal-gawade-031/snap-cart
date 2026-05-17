@@ -1,9 +1,8 @@
 "use client";
-import { ArrowLeft, Loader, LucideAirVent, Plus, PlusCircle, Upload } from "lucide-react";
+import { ArrowLeft, Loader, PlusCircle, Upload } from "lucide-react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import React, { ChangeEvent, FormEvent, useState } from "react";
-import { url } from "inspector";
+import React, { FormEvent, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 
@@ -158,7 +157,7 @@ const AddGrocery = () => {
                             >
                                 <option value="">Select units</option>
                                 {units.map((cat) => (
-                                    <option value={cat}>{cat}</option>
+                                    <option key={cat} value={cat}>{cat}</option>
                                 ))}
                             </select>
                         </div>
