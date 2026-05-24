@@ -10,14 +10,16 @@ interface IUser {
   role: "user" | "deliveryBoy" | "admin";
   image?: string;
 }
-
+//next step is write the api to featch the user data and store it in this states 
 interface UserState {
   userdata: IUser | null;
+  vishal:null
 }
 
 const initialState: UserState = {
 //   data will provided from reducer
     userdata: null,
+    vishal:null
 };
 
 const userSlice = createSlice({
