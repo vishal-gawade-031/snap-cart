@@ -1,10 +1,9 @@
 'use client'
-import { ArrowLeft, EyeIcon, EyeOff, Leaf, Loader2, Lock, LogIn, Mail, User, Vault } from 'lucide-react'
+import { EyeIcon, EyeOff, Leaf, Loader2, Lock, LogIn, Mail } from 'lucide-react'
 import { motion } from 'motion/react'
 import Image from 'next/image'
 import googleImage from '@/assets/google-logo-icon-gsuite-hd-701751694791470gzbayltphh.png'
-import React, { FormEvent, useState } from 'react'
-import axios from 'axios'
+import React, { FormEvent, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn, useSession } from 'next-auth/react'
 
@@ -14,23 +13,47 @@ const Login = () => {
     const [password,setPassword]=useState("");
     const [showPassword,setshowPassword]=useState(false);
     const [loading,setLoding]=useState(false);
+    const [googleLoading,setGoogleLoading]=useState(false);
+    const [error,setError]=useState("");
     const router=useRouter();
-    const session=useSession();
-    console.log("session in login ",session);
+    const { status }=useSession();
+
+    useEffect(()=>{
+        if(status==="authenticated"){
+            router.replace("/");
+        }
+    },[status, router])
+
     const handleLogin=async (e:FormEvent)=>{
         e.preventDefault();
+        setError("");
         setLoding(true)
         try{
-              await signIn("credentials",{
-                email,password
+              const result = await signIn("credentials",{
+                email,
+                password,
+                redirect:false
               })
-              router.push("/");
-              setLoding(false);
+              if(result?.error){
+                setError("Email or password is incorrect.");
+                return;
+              }
+              router.replace("/");
+              router.refresh();
         }
         catch(error){
             console.log(error);
+            setError("Login failed. Please try again.");
+        }
+        finally{
             setLoding(false);
         }
+    }
+
+    const handleGoogleLogin=async ()=>{
+        setError("");
+        setGoogleLoading(true);
+        await signIn("google",{callbackUrl:"/"});
     }
  
   return (
@@ -114,16 +137,29 @@ const Login = () => {
 
                       })()}
 
+                      {error && (
+                        <p className='rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700'>
+                            {error}
+                        </p>
+                      )}
+
                       <div className='flex items-center gap-2 text-gray-400 text-sm mt-2'>
                         <span className='flex-1 h-px bg-gray-400'></span> OR <span className='flex-1 h-px bg-gray-400'></span>
                         </div>
 
-                        <div className='w-full flex items-center justify-center gap-3 border border-gray-300
-                        hover:bg-gray-50 py-3 rounded-b-xl text-gray-700 font-medium transition-all duration-200'
-                        onClick={()=>signIn("google",{callbackUrl:"/"})}>
-                            <Image src={googleImage} width={20} height={20} alt='google image'/>
-                            Continue with Google 
-                        </div>
+                        <button
+                        type='button'
+                        disabled={googleLoading || loading}
+                        className='w-full flex items-center justify-center gap-3 border border-gray-300
+                        hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-70'
+                        onClick={handleGoogleLogin}>
+                            {googleLoading ? (
+                                <Loader2 className='w-5 h-5 animate-spin'/>
+                            ) : (
+                                <Image src={googleImage} width={20} height={20} alt='Google logo'/>
+                            )}
+                            {googleLoading ? "Opening Google..." : "Continue with Google"}
+                        </button>
 
             </motion.form>
             <p className='text-gray-600 mt-6 text-sm flex items-center gap-1 cursor-pointer'

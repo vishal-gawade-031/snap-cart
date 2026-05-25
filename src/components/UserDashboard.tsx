@@ -4,13 +4,20 @@ import CategorySlider from './CategorySlider'
 import GroceryItemCard from './GroceryItemCard'
 import connectDb from '@/lib/db'
 import Grocery from '@/models/grocery.model'
-import ProductAnalises from './ProductAnalises'
+
+type GroceryItem = {
+  name: string;
+  category: string;
+  price: string;
+  unit: string;
+  image: string;
+}
 
 async function UserDashboard() {
 
   await connectDb()
   const groceries=await Grocery.find({})
-  const plainGrocery = JSON.parse(JSON.stringify(groceries))
+  const plainGrocery = JSON.parse(JSON.stringify(groceries)) as GroceryItem[]
   // console.log("groceries",groceries);
   // console.log("plaingrocery",plainGrocery);
   return (
@@ -22,7 +29,7 @@ async function UserDashboard() {
           <h2 className='text-2xl md:text-3xl font-bold text-green-700 mb-6 text-center'>Popular Grocery Items</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap">
         
-        {plainGrocery.map((item: any,index:number) => (
+        {plainGrocery.map((item,index) => (
           <GroceryItemCard key={index} item={item} />
         ))}
         </div>

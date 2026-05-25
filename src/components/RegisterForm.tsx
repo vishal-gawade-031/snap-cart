@@ -1,4 +1,4 @@
-import { ArrowLeft, EyeIcon, EyeOff, Leaf, Loader2, Lock, LogIn, Mail, User, Vault } from 'lucide-react'
+import { ArrowLeft, EyeIcon, EyeOff, Leaf, Loader2, Lock, LogIn, Mail, User } from 'lucide-react'
 import { motion } from 'motion/react'
 import Image from 'next/image'
 import googleImage from '@/assets/google-logo-icon-gsuite-hd-701751694791470gzbayltphh.png'
@@ -16,24 +16,34 @@ const RegisterForm = ({previousStep}:propType) => {
     const [password,setPassword]=useState("");
     const [showPassword,setshowPassword]=useState(false);
     const [loading,setLoding]=useState(false);
+    const [googleLoading,setGoogleLoading]=useState(false);
     const router=useRouter();
     const handleRegister=async (e:React.FormEvent)=>{
         e.preventDefault()
+        setLoding(true);
         try{
-            const result=await axios.post("/api/auth/register",{
+            await axios.post("/api/auth/register",{
                 name,email,password
             })
            router.push("/login");
-            setLoding(false);
         }
         catch(error){
             console.log("error in handleregister")
-            console.log(error);
-               console.log((error as any).response?.data)
-    console.log((error as any).response?.status)
-    console.log((error as any).message)
-    setLoding(false);
+            if(axios.isAxiosError(error)){
+                console.log(error.response?.data)
+                console.log(error.response?.status)
+                console.log(error.message)
+            }else{
+                console.log(error)
+            }
         }
+        finally{
+            setLoding(false);
+        }
+    }
+    const handleGoogleRegister=async ()=>{
+        setGoogleLoading(true);
+        await signIn("google",{callbackUrl:"/"});
     }
   return (
         <div className='flex flex-col items-center justify-center min-h-screen px-6
@@ -135,13 +145,20 @@ const RegisterForm = ({previousStep}:propType) => {
                         <span className='flex-1 h-px bg-gray-400'></span> OR <span className='flex-1 h-px bg-gray-400'></span>
                         </div>
 
-                        <div className='w-full flex items-center justify-center gap-3 border border-gray-300
-                        hover:bg-gray-50 py-3 rounded-b-xl text-gray-700 font-medium transition-all duration-200'
+                        <button
+                        type='button'
+                        disabled={googleLoading || loading}
+                        className='w-full flex items-center justify-center gap-3 border border-gray-300
+                        hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-70'
                         // signIn is inbuilt function of auth js
-                        onClick={()=>signIn("google",{callbackUrl:"/"})}>
-                            <Image src={googleImage} width={20} height={20} alt='google image'/>
-                            Continue with Google 
-                        </div>
+                        onClick={handleGoogleRegister}>
+                            {googleLoading ? (
+                                <Loader2 className='w-5 h-5 animate-spin'/>
+                            ) : (
+                                <Image src={googleImage} width={20} height={20} alt='Google logo'/>
+                            )}
+                            {googleLoading ? "Opening Google..." : "Continue with Google"}
+                        </button>
 
             </motion.form>
             <p className='text-gray-600 mt-6 text-sm flex items-center gap-1 cursor-pointer'

@@ -14,14 +14,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       email:{label :"email",type:"email"},
       password:{label:"password", type:"password"},
       },
-      async authorize(credentials, request) {
+      async authorize(credentials) {
        
         await connectDb();
-              const email=credentials.email;
+              const email=credentials.email as string;
               const password=credentials.password as string;
               const user = await User.findOne({email});
               if(!user){
                 throw new Error("user does not exist");
+              }
+              if(!user.password){
+                throw new Error("please continue with Google for this account");
               }
               const isMatch= await bcrypt.compare(password,user.password);
               if(! isMatch){
@@ -48,6 +51,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn({user, account}){
     //  console.log("parems in callback :",user,account);
         if(account?.provider=="google"){
+          if(!user.email){
+            return false
+          }
           await connectDb()//conniting data base
           let dbUser = await User.findOne({email:user.email})
           if(!dbUser){
@@ -68,10 +74,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     // in this tow callback jwt and session user data is in token and token data is in session
     jwt({token,user,session,trigger}){
       if(user){
-        token.id=user.id,
-        token.name=user.name,
-        token.email=user.email,
-        token.role=user.role
+        token.id=user.id;
+        token.name=user.name;
+        token.email=user.email;
+        token.role=user.role;
       }
       if(trigger=="update"){
         token.role=session.role
@@ -98,7 +104,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   session:{
     strategy:"jwt",
-    maxAge:10*24*60*60*1000
+    maxAge:10*24*60*60
   },
   secret:process.env.AUTH_SECRET
 })
