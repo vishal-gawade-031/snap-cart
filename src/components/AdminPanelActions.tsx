@@ -11,7 +11,7 @@ const adminActions = [
   {
     title: "View Groceries",
     description: "Review listed products and keep inventory details up to date.",
-    href: "#",
+    href: "/admin/products",
     icon: Boxes,
   },
   {
