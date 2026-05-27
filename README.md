@@ -1,32 +1,35 @@
 # SnapCart
 
-SnapCart is a grocery shopping application built with Next.js. It supports user registration, credential and Google login, role-based dashboards, grocery inventory display, admin grocery uploads, and product analytics backed by MongoDB.
+SnapCart is a grocery delivery web app built with Next.js App Router. It includes email/password and Google authentication, role-based routing, a customer grocery dashboard, admin product management, MongoDB data storage, and Cloudinary image uploads.
 
 ## Features
 
-- User authentication with NextAuth credentials and Google OAuth.
-- Protected routes with role checks for `user`, `admin`, and `deliveryBoy`.
-- Registration flow with password hashing using bcrypt.
-- User onboarding for missing mobile number and role information.
-- User dashboard with hero section, category slider, grocery cards, search UI, and cart button UI.
-- Admin dashboard with product analytics, category sales breakdown, top products, and store health widgets.
-- Admin grocery creation form with image upload to Cloudinary.
-- MongoDB models for users and grocery products.
-- Responsive UI built with Tailwind CSS, Lucide icons, and Motion animations.
+- User registration with hashed passwords using `bcryptjs`.
+- Login with credentials or Google OAuth through NextAuth.
+- JWT sessions with custom user fields for `id`, `email`, `name`, and `role`.
+- Protected pages with role checks for `user`, `admin`, and `deliveryBoy`.
+- Onboarding screen for users who need to add their mobile number or role.
+- Customer dashboard with hero section, category slider, and grocery product cards loaded from MongoDB.
+- Admin dashboard with quick actions and product analytics.
+- Admin add-grocery form with category, unit, price, and image upload.
+- Admin product listing page with inventory stats, search, and category filtering.
+- `/api/me` endpoint for fetching the authenticated user's profile.
+- Redux Toolkit store scaffold for user state.
 
 ## Tech Stack
 
-- Next.js 16 with App Router
+- Next.js 16 App Router
 - React 19
 - TypeScript
 - Tailwind CSS 4
 - NextAuth 5 beta
-- MongoDB and Mongoose
+- MongoDB with Mongoose
 - Cloudinary
+- Redux Toolkit and React Redux
 - Axios
 - bcryptjs
 - lucide-react
-- motion
+- Motion
 - embla-carousel-react
 
 ## Project Structure
@@ -34,25 +37,35 @@ SnapCart is a grocery shopping application built with Next.js. It supports user 
 ```text
 src/
   app/
+    admin/
+      add-grocery/          Admin page for creating grocery products
+      products/             Admin product inventory page
     api/
-      admin/add-grocery/      Admin grocery creation API
-      auth/[...nextauth]/      NextAuth route handler
-      auth/register/           User registration API
-      user/edit-role-mobile/   User role and mobile update API
-    admin/add-grocery/         Admin grocery form page
-    login/                     Login page
-    register/                  Registration page
-    unauthorized/              Unauthorized access page
-    page.tsx                   Authenticated home dashboard router
-  components/                  UI and dashboard components
+      admin/add-grocery/    Admin-only grocery creation API
+      auth/[...nextauth]/    NextAuth route handler
+      auth/register/         User registration API
+      me/                    Current authenticated user API
+      user/edit-role-mobile/ User role and mobile update API
+    login/                   Login page
+    register/                Registration flow
+    unauthorized/            Unauthorized access page
+    layout.tsx               App providers and global layout
+    page.tsx                 Role-based home dashboard
+  components/                Dashboard, auth, product, and navigation UI
+  Hooks/
+    useGetMe.tsx             Client hook for `/api/me`
   lib/
-    cloudinary.ts              Cloudinary upload helper
-    db.ts                      MongoDB connection helper
+    cloudinary.ts            Cloudinary upload helper
+    db.ts                    MongoDB connection helper
   models/
-    grocery.model.tsx          Grocery schema
-    user.model.ts              User schema
-  auth.ts                      NextAuth configuration
-  proxy.ts                     Route protection and role middleware
+    grocery.model.tsx        Grocery Mongoose schema
+    user.model.ts            User Mongoose schema
+  redux/
+    store.ts                 Redux store
+    userSlice.ts             User state slice
+    StoreProvider.tsx        Redux provider wrapper
+  auth.ts                    NextAuth configuration
+  proxy.ts                   Route protection middleware
 ```
 
 ## Getting Started
@@ -63,7 +76,7 @@ Install dependencies:
 npm install
 ```
 
-Create `.env.local` in the project root:
+Create a `.env.local` file in the project root:
 
 ```env
 MONGODB_URL=your_mongodb_connection_string
@@ -92,58 +105,92 @@ npm run start
 npm run lint
 ```
 
-## Main Routes
+## Routes
 
-- `/` - Authenticated dashboard. Shows the user, admin, or delivery dashboard based on the signed-in user's role.
-- `/login` - Login with email/password or Google.
-- `/register` - New account registration flow.
-- `/admin/add-grocery` - Admin-only grocery creation page.
-- `/unauthorized` - Shown when a user tries to access a route for another role.
+- `/` - Authenticated home page. Shows the customer, admin, or delivery dashboard based on the user's role.
+- `/login` - Login page for credentials and Google OAuth.
+- `/register` - Registration flow.
+- `/admin/add-grocery` - Admin-only page for adding grocery products.
+- `/admin/products` - Admin-only inventory page with search and category filtering.
+- `/unauthorized` - Access denied page for users without the required role.
 
 ## API Routes
 
-- `POST /api/auth/register` - Creates a user with hashed password.
-- `POST /api/admin/add-grocery` - Allows admins to add a grocery product with image upload.
+- `POST /api/auth/register` - Creates a new user after checking duplicate email and password length.
+- `/api/auth/[...nextauth]` - NextAuth authentication endpoints.
+- `GET /api/me` - Returns the authenticated user's profile without the password field.
 - `POST /api/user/edit-role-mobile` - Updates the signed-in user's role and mobile number.
-- `/api/auth/[...nextauth]` - NextAuth authentication routes.
+- `POST /api/admin/add-grocery` - Allows admins to create grocery products and upload product images to Cloudinary.
 
 ## Data Models
 
 ### User
 
-Users include:
-
-- `name`
-- `email`
-- `password`
-- `mobile`
-- `role`: `user`, `deliveryBoy`, or `admin`
-- `image`
+```text
+name      string, required
+email     string, required, unique
+password  string, optional
+mobile    string, optional
+role      "user" | "deliveryBoy" | "admin", default "user"
+image     string, optional
+```
 
 ### Grocery
 
-Groceries include:
+```text
+name      string, required
+category  supported grocery category, required
+price     string, required
+unit      "kg" | "g" | "litre" | "ml" | "piece" | "pack"
+image     string, required
+```
 
-- `name`
-- `category`
-- `price`
-- `unit`: `kg`, `g`, `litre`, `ml`, `piece`, or `pack`
-- `image`
+Supported categories:
 
-Supported grocery categories include fruits and vegetables, dairy and eggs, grains, snacks, spices, beverages, personal care, household essentials, packaged food, and baby or pet care.
+- Fruits & Vegetables
+- Dairy & Eggs
+- Rice, Atta & Grains
+- Snacks & Biscuits
+- Spices & Masalas
+- Beverages & Drinks
+- Personal Care
+- Household Essentials
+- Instant & Packaged Food
+- Baby & Pet Care
 
-## Authentication and Roles
+## Authentication and Authorization
 
-The app uses JWT sessions through NextAuth. Public routes include login, register, and auth API routes. Other pages require a valid session.
+The app uses NextAuth with JWT sessions. Credentials login checks the MongoDB user record and compares the password hash. Google login creates a user record when the email does not already exist.
 
-Role protection is handled in `src/proxy.ts`:
+Public routes:
+
+- `/login`
+- `/register`
+- `/api/auth/*`
+
+Protected role rules in `src/proxy.ts`:
 
 - `/admin/*` requires `admin`
 - `/user/*` requires `user`
 - `/delivery/*` requires `deliveryBoy`
 
-After login, users with incomplete profile details are shown the role and mobile update screen before entering the main dashboard.
+After login, users missing profile details are sent to the role and mobile update screen before their dashboard is shown.
 
 ## Current Status
 
-The core authentication, user dashboard, admin dashboard, grocery creation, MongoDB connection, and Cloudinary upload flow are implemented. Some navigation targets and product/order features are still placeholders, including cart behavior, order management, view grocery pages, and the delivery dashboard.
+Implemented:
+
+- Authentication and registration.
+- MongoDB connection and Mongoose models.
+- Customer grocery dashboard.
+- Admin dashboard, analytics, add-grocery flow, and product listing.
+- Cloudinary upload support for grocery images.
+- Basic user profile API and Redux user-state scaffold.
+
+Still incomplete or placeholder:
+
+- Cart behavior.
+- Checkout and order management.
+- Delivery dashboard content.
+- Admin order management.
+- Product edit/delete actions.
