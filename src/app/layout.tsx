@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import InitUser from "@/initUser";
 
 import Provider from "@/Provider";
 import StoreProvider from "@/redux/StoreProvider";
@@ -19,6 +20,7 @@ export default function RootLayout({
       <body className="w-full min-h-screen bg-linear-to-b from-green-100 to-white">
         <Provider>
           <StoreProvider>
+            <InitUser/>
                {children}
           </StoreProvider>
         </Provider>
