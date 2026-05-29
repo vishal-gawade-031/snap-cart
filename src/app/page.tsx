@@ -18,7 +18,7 @@ async function Home(){
       redirect("/login");
     }
     const inComplete=!user.mobile || !user.role || (!user.mobile && user.role=="user");
-    console.log("result of incomplete:",inComplete);
+    //console.log("result of incomplete:",inComplete);
     if(inComplete){
        return <EditRoleMobile/>
     }

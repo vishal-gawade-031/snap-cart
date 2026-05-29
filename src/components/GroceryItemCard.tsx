@@ -16,7 +16,7 @@ interface IGrocery {
 }
 
 function GroceryItemCard({item}:{item:IGrocery}) {
-  console.log("item name:",item.name)
+  //console.log("item name:",item.name)
   return (
       <motion.div
        initial={{ opacity: 0, y: 50, scale:0.9}}

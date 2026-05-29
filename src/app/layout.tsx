@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import InitUser from "@/initUser";
+import InitUser from "@/InitUser";
 
 import Provider from "@/Provider";
 import StoreProvider from "@/redux/StoreProvider";
