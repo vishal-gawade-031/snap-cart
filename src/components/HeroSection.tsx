@@ -1,11 +1,17 @@
 'use client'
 import { Leaf, ShoppingBasket, Sliders, Smartphone, Truck } from 'lucide-react'
-import { AnimatePresence } from 'motion/react'
+import { AnimatePresence, statsBuffer } from 'motion/react'
 import { title } from 'process'
 import React, { useEffect, useState } from 'react'
 import { motion } from "motion/react"; 
 import Image from 'next/image'
+import { useSelector } from 'react-redux'
+import { RootState } from "@/redux/store";
 const HeroSection = () => {
+  //to access the data from redux 
+  // const {userdata}=useSelector((state.Rootstate)=>state.user)
+  const {userdata}=useSelector((state:RootState)=>state.user)
+  console.log("user data in herosection",userdata);
     const slides=[{
       id:1,
       icon:<Leaf className='w-20 h-20 sm:w-28 sm:h-28 text-green-400 droup-shadow-lg'/>,
