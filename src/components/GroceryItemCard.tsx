@@ -4,6 +4,10 @@ import React from 'react'
 import {motion} from "motion/react"
 import Image from 'next/image';
 import { ShoppingCart } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { AppDirModules } from 'next/dist/build/webpack/loaders/next-app-loader';
+import { AppDispatch } from '@/redux/store';
+import { addToCart } from '@/redux/cartSlice';
 interface IGrocery {
     id?: mongoose.Types.ObjectId;
     name: string;
@@ -16,6 +20,7 @@ interface IGrocery {
 }
 
 function GroceryItemCard({item}:{item:IGrocery}) {
+    const dispatch=useDispatch<AppDispatch>()
   //console.log("item name:",item.name)
   return (
       <motion.div
@@ -45,7 +50,9 @@ function GroceryItemCard({item}:{item:IGrocery}) {
                                 </div>
 
                                 <motion.button className='mt-4 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700
-                                text-white rounded-full py-2 text-sm font-medium transition-all'>
+                                text-white rounded-full py-2 text-sm font-medium transition-all'
+                                onClick={()=>dispatch(addToCart({...item,quantity:1}))}
+                                >
                                     <ShoppingCart/> Add to Cart
                                 </motion.button>
                     </div>
