@@ -35,6 +35,7 @@ export default function EditRoleMobile() {
   }
 
   return (
+    
     <div className='flex flex-col items-center min-h-screen p-6 w-full bg-green-50'>
       <motion.h1
         initial={{
