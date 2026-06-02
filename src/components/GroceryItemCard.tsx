@@ -4,9 +4,9 @@ import React from 'react'
 import {motion} from "motion/react"
 import Image from 'next/image';
 import { ShoppingCart } from 'lucide-react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDirModules } from 'next/dist/build/webpack/loaders/next-app-loader';
-import { AppDispatch } from '@/redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import { addToCart } from '@/redux/cartSlice';
 interface IGrocery {
     id?: mongoose.Types.ObjectId;
@@ -22,6 +22,8 @@ interface IGrocery {
 function GroceryItemCard({item}:{item:IGrocery}) {
     const dispatch=useDispatch<AppDispatch>()
   //console.log("item name:",item.name)
+  const {cartData}=useSelector((state:RootState)=>state.cart)
+//   const cartItem=cartData.find()
   return (
       <motion.div
        initial={{ opacity: 0, y: 50, scale:0.9}}

@@ -9,6 +9,9 @@ import { AnimatePresence, motion } from 'motion/react'
 import { signOut } from 'next-auth/react'
 import mongoose from 'mongoose'
 import { createPortal } from 'react-dom'
+import { useSelector } from 'react-redux'
+import { RootState } from "@/redux/store";
+
 
 interface IUser {
   _id?: mongoose.Types.ObjectId
@@ -25,6 +28,7 @@ function Nav({ user }: { user: IUser }) {
   const profileDropDown = useRef<HTMLDivElement>(null);
   const [searchBarOpen,setSearchBarOpen]=useState(false);
   const [menuOpen,setMenuOpen]=useState(false);
+  const {cartData}=useSelector((state:RootState)=>state.cart)
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -131,7 +135,7 @@ function Nav({ user }: { user: IUser }) {
             className='absolute -top-1 -right-1 bg-red-500 text-white text-xs
             w-5 h-5 flex items-center justify-center rounded-full font-semibold shadow'
           >
-            0
+            {cartData.length}
           </span>
         </Link></>}
 {/* admin portal */}
