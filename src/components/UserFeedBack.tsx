@@ -24,7 +24,7 @@ export default function UserFeedBack() {
           value={feedback}
           onChange={(e) => setFeedback(e.target.value)}
           placeholder="Write your feedback here..."
-          className="w-full border rounded-md p-3 min-h-[120px] outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full border rounded-md p-3 min-h-30 outline-none focus:ring-2 focus:ring-green-500"
           required
         />
 
