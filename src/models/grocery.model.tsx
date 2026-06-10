@@ -1,7 +1,7 @@
 import mongoose, { Schema, models, model } from "mongoose";
 
 interface IGrocery {
-    id?: mongoose.Types.ObjectId;
+    _id?: mongoose.Types.ObjectId;
     name: string;
     category: string;
     price: string;

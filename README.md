@@ -100,9 +100,7 @@ Open `http://localhost:3000` in your browser.
 
 ```bash
 npm run dev
-npm run build
-npm run start
-npm run lint
+
 ```
 
 ## Routes
@@ -194,3 +192,6 @@ Still incomplete or placeholder:
 - Delivery dashboard content.
 - Admin order management.
 - Product edit/delete actions.
+# redux toolkit 
+ - userSlice to access the userdata
+ - cartSlice to access the cart data
