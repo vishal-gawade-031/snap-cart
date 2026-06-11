@@ -10,11 +10,12 @@ SnapCart is a grocery delivery web app built with Next.js App Router. It include
 - Protected pages with role checks for `user`, `admin`, and `deliveryBoy`.
 - Onboarding screen for users who need to add their mobile number or role.
 - Customer dashboard with hero section, category slider, and grocery product cards loaded from MongoDB.
+- Redux-powered user profile state and cart item count.
 - Admin dashboard with quick actions and product analytics.
 - Admin add-grocery form with category, unit, price, and image upload.
 - Admin product listing page with inventory stats, search, and category filtering.
 - `/api/me` endpoint for fetching the authenticated user's profile.
-- Redux Toolkit store scaffold for user state.
+- Redux Toolkit store with `user` and `cart` slices.
 
 ## Tech Stack
 
@@ -61,6 +62,7 @@ src/
     grocery.model.tsx        Grocery Mongoose schema
     user.model.ts            User Mongoose schema
   redux/
+    cartSlice.ts             Cart state slice
     store.ts                 Redux store
     userSlice.ts             User state slice
     StoreProvider.tsx        Redux provider wrapper
@@ -100,7 +102,9 @@ Open `http://localhost:3000` in your browser.
 
 ```bash
 npm run dev
-
+npm run build
+npm run start
+npm run lint
 ```
 
 ## Routes
@@ -119,6 +123,99 @@ npm run dev
 - `GET /api/me` - Returns the authenticated user's profile without the password field.
 - `POST /api/user/edit-role-mobile` - Updates the signed-in user's role and mobile number.
 - `POST /api/admin/add-grocery` - Allows admins to create grocery products and upload product images to Cloudinary.
+
+## Redux Toolkit Functionality
+
+Redux is configured in `src/redux/store.ts` with two reducers:
+
+```ts
+reducer: {
+  user: userSlice,
+  cart: cartSlice,
+}
+```
+
+The store also exports shared TypeScript helper types:
+
+- `RootState` - used with `useSelector` to type global state reads.
+- `AppDispatch` - used with `useDispatch` to type dispatched actions.
+
+### Store Provider
+
+`src/redux/StoreProvider.tsx` wraps the app with React Redux's `Provider`.
+
+It is used in `src/app/layout.tsx`, so all client components inside the app can access Redux state:
+
+```tsx
+<Provider>
+  <StoreProvider>
+    <InitUser />
+    {children}
+  </StoreProvider>
+</Provider>
+```
+
+### User Slice
+
+`src/redux/userSlice.ts` stores the signed-in user's profile data.
+
+State shape:
+
+```ts
+{
+  userdata: IUser | null
+}
+```
+
+The `setUserData` reducer updates `userdata` with the authenticated user's profile.
+
+Current flow:
+
+- `src/InitUser.tsx` runs the `useGetMe` hook when the app loads.
+- `src/Hooks/useGetMe.tsx` calls `GET /api/me` with Axios.
+- The API response is dispatched with `setUserData(result.data)`.
+- Components such as `HeroSection` read `state.user.userdata` using `useSelector`.
+
+### Cart Slice
+
+`src/redux/cartSlice.ts` stores grocery products added to the cart.
+
+State shape:
+
+```ts
+{
+  cartData: IGrocery[]
+}
+```
+
+Each cart item includes grocery details plus a `quantity` field:
+
+```ts
+{
+  id?: ObjectId,
+  name: string,
+  category: string,
+  price: string,
+  unit: string,
+  quantity: number,
+  image: string
+}
+```
+
+The `addToCart` reducer pushes a grocery item into `cartData`.
+
+Current flow:
+
+- `GroceryItemCard` reads `state.cart.cartData`.
+- If the product is not already in the cart, it shows the `Add to Cart` button.
+- Clicking `Add to Cart` dispatches `addToCart({ ...item, quantity: 1 })`.
+- `Nav` reads `cartData.length` and displays it as the cart badge count.
+
+Current cart limitations:
+
+- Cart data is stored only in client-side Redux memory.
+- Cart data is lost on page refresh.
+- Quantity increase/decrease, remove-from-cart, checkout, and order persistence are not implemented yet.
 
 ## Data Models
 
@@ -183,15 +280,14 @@ Implemented:
 - Customer grocery dashboard.
 - Admin dashboard, analytics, add-grocery flow, and product listing.
 - Cloudinary upload support for grocery images.
-- Basic user profile API and Redux user-state scaffold.
+- User profile API with Redux user-state hydration.
+- Redux cart slice with add-to-cart behavior and navbar cart count.
 
 Still incomplete or placeholder:
 
-- Cart behavior.
+- Persistent cart behavior.
+- Cart quantity updates and item removal.
 - Checkout and order management.
 - Delivery dashboard content.
 - Admin order management.
 - Product edit/delete actions.
-# redux toolkit 
- - userSlice to access the userdata
- - cartSlice to access the cart data
