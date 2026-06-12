@@ -32,11 +32,13 @@ function StoreDashboardHeader({ today }: StoreDashboardHeaderProps) {
           <button className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50">
             <Bell className="h-4 w-4" />
             5 Alerts
+            {/* update the alerts when some inspices  */}
           </button>
 
           <button className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 text-sm font-semibold text-white hover:bg-slate-800">
             <UserRound className="h-4 w-4" />
             Vishal
+            {/* take the name from auth session  */}
           </button>
         </div>
       </div>

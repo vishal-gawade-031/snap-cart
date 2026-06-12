@@ -286,6 +286,7 @@ export default function StoreInventoryOrders({
         <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
           <h2 className="text-lg font-semibold">
             Recent Orders
+        {/* collect from data base  */}
           </h2>
         </section>
 
@@ -293,6 +294,7 @@ export default function StoreInventoryOrders({
         <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
           <h2 className="text-lg font-semibold">
             Top Selling Products
+            {/* collect from database witch is most order or click product's  */}
           </h2>
         </section>
       </section>
