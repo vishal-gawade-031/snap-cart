@@ -6,7 +6,7 @@ import User from "@/models/user.model";
 import { redirect } from "next/navigation";
 import UserDashbord from "@/components/UserDashboard";
 import React from "react";
-import AdminDashboard from "@/components/AdminDashboard";
+// import AdminDashboard from "@/components/AdminDashboard";
 import DeliveryBoy from "@/components/DeliveryBoy";
 
 async function Home(){

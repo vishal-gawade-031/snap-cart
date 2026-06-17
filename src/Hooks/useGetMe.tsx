@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux'
     useEffect(()=>{
         const getMe=async ()=>{
             try{
+                // taking data from api and storing in redux
                 const result= await axios.get("/api/me");
                  console.log("result of api in usegetme",result.data);
                 dispatch(setUserData(result.data))
